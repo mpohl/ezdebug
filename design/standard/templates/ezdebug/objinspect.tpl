@@ -53,10 +53,11 @@
     var ezdebug_objdocroot = '{concat(ezini('InspectSettings', 'DocRoot', 'ezdebug.ini').objects, '/')|wash(javascript)}';
     var ezdebug_objdocsuffix = '{ezini('InspectSettings', 'PageSuffix', 'ezdebug.ini')|wash(javascript)}';
     var ezdebug_transport = '{$transport}';
+
     {if eq($transport, 'ezjscore')}
-    var transport_url = '{'ezjscore/call/?ContentType=json'|ezurl(no, full)|wash(javascript)}';
+        var transport_url = '{'ezjscore/call/?ContentType=json'|ezurl(no, full)|wash(javascript)}';
     {elseif eq($transport, 'ggwebservices')}
-    var transport_url = '{'webservices/execute/jsonrpc'|ezurl(no, full)|wash(javascript)}';
+        var transport_url = '{'webservices/execute/jsonrpc'|ezurl(no, full)|wash(javascript)}';
     {/if}
 </script>
 {undef $preferred_packing $preferred_version}
@@ -78,11 +79,13 @@
     {rdelim}
 
     {if $send_to_debug|not()}
-    ezdebug_display_{$counter}();
+        ezdebug_display_{$counter}();
     {else}
-    if (window.addEventListener)
-        window.addEventListener('load', function(){ldelim} fixDebugOutput('ezdebugparam{$counter}'); ezdebug_display_{$counter}(); {rdelim}, false);
-    else if (window.attachEvent)
-        window.attachEvent('onload',  function(){ldelim} fixDebugOutput('ezdebugparam{$counter}'); {rdelim});
+        if (window.addEventListener)
+            window.addEventListener('load', function(){ldelim} fixDebugOutput('ezdebugparam{$counter}'); ezdebug_display_{$counter}(); {rdelim}, false);
+        else if (window.attachEvent)
+            window.attachEvent('onload',  function(){ldelim} fixDebugOutput('ezdebugparam{$counter}'); {rdelim});
     {/if}
+    console.log('ezdebugparam_{$counter}');
+    console.log({$value});
 </script>
