@@ -277,13 +277,17 @@ YAHOO.extend(YAHOO.widget.eZDebugNode, YAHOO.widget.Node, {
 				this.beginDDRequest(originalNodeID);
 
 				if (ezdebug_transport == 'ezjscore') {
-					var postData = 'ezjscServer_function_arguments=' + 'ezp::inspect::' + matches[2] + '::' + this.data.keys + '::' + childAttributepath.join('::');
+                    // add ezformtoken
+                    var _token = '', _tokenNode =  document.getElementById('ezxform_token_js');
+                    if ( _tokenNode )
+                        _token =  'ezxform_token=' + _tokenNode.getAttribute('title') + '&';
+                    var postData = _token+'ezjscServer_function_arguments=' + 'ezp::inspect::' + matches[2] + '::' + this.data.keys + '::' + childAttributepath.join('::');
 				}
 				else {
 					var params = new Array(matches[2], this.data.keys).concat(childAttributepath);
 					var postData = YAHOO.lang.JSON.stringify({"method":"ezp.inspect", "params":params, "id":1});
 				}
-				YAHOO.util.Connect.asyncRequest('POST', transport_url, {
+                YAHOO.util.Connect.asyncRequest('POST', transport_url, {
 
 					'success': function(o) {
 						try {
